@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {AuthContext} from '../navigation/AuthProvider';
+import moment from 'moment';
 
 import {
   Container,
@@ -18,7 +20,9 @@ import {
   Divider,
 } from '../styles/FeedStyles';
 
-const PostCard = ({item}) => {
+const PostCard = ({item, onDelete}) => {
+  const {user, logout} = useContext(AuthContext);
+
   const likeIcon = item.liked ? 'heart' : 'heart-outline';
   const likedIcon = item.liked ? '#2e64e5' : '#333';
   let likeText;
@@ -40,17 +44,17 @@ const PostCard = ({item}) => {
   }
 
   return (
-    <Card>
+    <Card key={item.id}>
       <UserInfo>
-        <UserImg source={item.userImg} />
+        <UserImg source={{uri: item.userImg}} />
         <UserInfoText>
           <UserName>{item.userName}</UserName>
-          <PostTime>{item.postTime}</PostTime>
+          <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
         </UserInfoText>
       </UserInfo>
       <PostText>{item.post}</PostText>
-      {item.postImg !== 'none' ? (
-        <PostImg source={item.postImg} />
+      {item.postImg !== null ? (
+        <PostImg source={{uri: item.postImg}} />
       ) : (
         <Divider />
       )}
@@ -64,6 +68,11 @@ const PostCard = ({item}) => {
           <Ionicons name="md-chatbubble-outline" size={25} />
           <InteractionText>{commentText}</InteractionText>
         </Interaction>
+        {user.uid == item.userId ? (
+          <Interaction onPress={() => onDelete(item.id)}>
+            <Ionicons name="md-trash-bin" size={25} />
+          </Interaction>
+        ) : null}
       </InteractionWrapper>
     </Card>
   );

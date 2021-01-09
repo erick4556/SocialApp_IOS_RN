@@ -79,22 +79,12 @@ const AddPostScreen = () => {
   };
 
   const uploadImage = async () => {
+    if (image === null) {
+      return null;
+    }
+
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1); //File name
-
-    /* setUploading(true);
-    try {
-      await storage().ref(filename).putFile(uploadUri);
-      Alert.alert(
-        'Image uploaded!',
-        'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-      );
-      setUploading(false);
-    } catch (error) {
-      console.log(error); 
-    } 
-
-    setImage(null);*/
 
     // Add timestamp to File Name
     const extension = filename.split('.').pop();
@@ -132,8 +122,6 @@ const AddPostScreen = () => {
       console.log(e);
       return null;
     }
-
-    setImage(null);
   };
 
   return (
