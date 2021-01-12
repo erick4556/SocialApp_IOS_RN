@@ -19,6 +19,7 @@ import {
   InteractionText,
   Divider,
 } from '../styles/FeedStyles';
+import ProgressiveImage from './ProgressiveImage';
 
 const PostCard = ({item, onDelete}) => {
   const {user, logout} = useContext(AuthContext);
@@ -53,8 +54,16 @@ const PostCard = ({item, onDelete}) => {
         </UserInfoText>
       </UserInfo>
       <PostText>{item.post}</PostText>
-      {item.postImg !== null ? (
+      {/*  {item.postImg !== null ? (
         <PostImg source={{uri: item.postImg}} />
+      ) */}
+      {item.postImg !== null ? (
+        <ProgressiveImage
+          defaultImage={require('../assets/rn-social-logo.png')}
+          source={{uri: item.postImg}}
+          style={{width: '100%', height: 250}}
+          resizeMode={'cover'}
+        />
       ) : (
         <Divider />
       )}
