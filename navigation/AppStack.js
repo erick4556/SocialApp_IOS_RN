@@ -6,17 +6,17 @@ import HomeScreen from '../screens/HomeScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddPostScreen from '../screens/AddPostScreen';
+import MessagesScreen from '../screens/MessageScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HomeStack = createStackNavigator();
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeStackScreen = ({navigation}) => {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -42,7 +42,7 @@ const HomeStackScreen = ({navigation}) => {
           ),
         }}
       />
-      <HomeStack.Screen
+      <Stack.Screen
         name="AddPost"
         component={AddPostScreen}
         options={{
@@ -71,11 +71,35 @@ const HomeStackScreen = ({navigation}) => {
           ),
         }}
       />
-    </HomeStack.Navigator>
+    </Stack.Navigator>
   );
 };
 
+const MessageStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen name="Messages" component={MessagesScreen} />
+    <Stack.Screen
+      name="Chat"
+      component={ChatScreen}
+      options={({route}) => ({
+        title: route.params.userName,
+        headerBackTitleVisible: false,
+      })}
+    />
+  </Stack.Navigator>
+);
+
 const AppStack = () => {
+  const getTabBarVisibility = (route) => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'Chat') {
+      return false;
+    }
+    return true;
+  };
   return (
     <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
@@ -90,13 +114,18 @@ const AppStack = () => {
       />
       <Tab.Screen
         name="Messages"
-        component={ChatScreen}
-        options={{
-          tabBarLabel: 'Messages',
-          tabBarIcon: ({color}) => (
-            <FontAwesome name="comments" color={color} size={26} />
+        component={MessageStack}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisibility(route),
+          // tabBarLabel: 'Messages',
+          tabBarIcon: ({color, size}) => (
+            <Ionicons
+              name="chatbox-ellipses-outline"
+              color={color}
+              size={size}
+            />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Home3"
