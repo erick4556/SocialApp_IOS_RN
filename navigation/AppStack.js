@@ -9,6 +9,7 @@ import AddPostScreen from '../screens/AddPostScreen';
 import MessagesScreen from '../screens/MessageScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,14 +60,23 @@ const HomeStackScreen = ({navigation}) => {
               <Ionicons name="arrow-back" size={25} color="#2e64e5" />
             </View>
           ),
-          headerRight: () => (
-            <View style={{marginRight: 15}}>
-              <TouchableOpacity>
-                <Text
-                  style={{fontWeight: '600', fontSize: 18, color: '#2e64e5'}}>
-                  Post
-                </Text>
-              </TouchableOpacity>
+        }}
+      />
+      <Stack.Screen
+        name="HomeProfile"
+        component={ProfileScreen}
+        options={{
+          title: '',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#fff',
+            shadowColor: '#fff',
+            elevation: 0,
+          },
+          headerBackTitleVisible: false,
+          headerBackImage: () => (
+            <View style={{marginLeft: 15}}>
+              <Ionicons name="arrow-back" size={25} color="#2e64e5" />
             </View>
           ),
         }}
@@ -85,6 +95,30 @@ const MessageStack = ({navigation}) => (
         title: route.params.userName,
         headerBackTitleVisible: false,
       })}
+    />
+  </Stack.Navigator>
+);
+
+const ProfileStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfileScreen}
+      options={{
+        headerTitle: 'Edit Profile',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
     />
   </Stack.Navigator>
 );
@@ -128,10 +162,10 @@ const AppStack = () => {
         })}
       />
       <Tab.Screen
-        name="Home3"
-        component={ProfileScreen}
+        name="Profile"
+        component={ProfileStack}
         options={{
-          tabBarLabel: 'Profile',
+          // tabBarLabel: 'Profile',
           tabBarIcon: ({color}) => (
             <FontAwesome name="user" color={color} size={26} />
           ),

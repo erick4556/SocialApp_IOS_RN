@@ -112,7 +112,7 @@ const AddPostScreen = () => {
     try {
       await task;
 
-      const url = await storageRef.getDownloadURL(); //Para recibir el enlace de la imagen
+      const url = await storageRef.getDownloadURL(); //For getting the image link
 
       setUploading(false);
       setImage(null);
